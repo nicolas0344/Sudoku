@@ -3,6 +3,7 @@ library(combinat)
 #génération aléatoire de la première ligne
 L1<-sample(1:9)
 
+#fonction de permutation par bloc de 3
 perm3<-function(c){
   n<-length(c)
   a<-rep(0,n)
