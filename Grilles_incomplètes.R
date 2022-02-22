@@ -5,10 +5,15 @@ Grille_incomplete<-function(M,n){
   if (n>m){
     return(c("n doit être inférieur à",m))
   }
-  for (i in 1:n){
+  a <- 0 
+  while (a < n){
     n_1 <- sample(1:9)[1]
     n_2 <- sample(1:9)[1]
-    M[n_1,n_2]<-NA
+    
+    if (!(is.na(M[n_1,n_2]))){
+      M[n_1,n_2]<-NA
+      a <- a+1
+    }
   }
   return(M)
 }
