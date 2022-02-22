@@ -1,5 +1,6 @@
 library(combinat)
 
+#Donne un Sudoku avec n valeurs cachées aléatoirement
 Grille_incomplete<-function(M,n){
   m<-length(M)
   if (n>m){
@@ -18,5 +19,8 @@ Grille_incomplete<-function(M,n){
   return(M)
 }
 
+#ex
+M <- Sudoku()
+Grille_incomplete(M,30)
 
 
