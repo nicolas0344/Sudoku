@@ -95,3 +95,4 @@ valeurs_case<-function(M,i,j){
 #ex
 valeurs_case(M,2,1)
 
+
