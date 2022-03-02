@@ -10,5 +10,6 @@ shinyServer(function(input, output) {
         plotSudoku_2(data())
     })
 
+
 })
 
