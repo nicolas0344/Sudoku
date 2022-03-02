@@ -80,14 +80,14 @@ valeurs_case<-function(M,i,j){
   x <- bloc_ij(i,j)
   a <- x[1]
   b <- x[2]
-  c <- c()
+  d <- c()
   
   for (k in 1:9){
     if (!(is.element(k,c(M[i,],M[,j],M[(a:a+2),b],M[(a:a+2),b+1],M[(a:a+2),b+2])))){
-      c<-c((c,k))
+      d<-c(d,k)
     }
   }
-  return(c)
+  return(d)
 }
 
 #ex
