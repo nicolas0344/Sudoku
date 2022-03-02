@@ -1,6 +1,9 @@
 library(shiny)
 library(shinyWidgets)
 
+"File > New file > Shiny_Webb app : colles dans ui.R le fichier Ui et dans Server.R 
+le fichier Server, ensuite appuis sur Run App en haut à droite!"
+
 shinyUI(fluidPage(
     
     fluidRow(
