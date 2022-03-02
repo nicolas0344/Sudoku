@@ -84,7 +84,7 @@ valeurs_case<-function(M,i,j){
   
   for (k in 1:9){
     if (!(is.element(k,c(M[i,],M[,j],M[(a:a+2),b],M[(a:a+2),b+1],M[(a:a+2),b+2])))){
-      c<-paste(c,k)
+      c<-c((c,k))
     }
   }
   return(c)
