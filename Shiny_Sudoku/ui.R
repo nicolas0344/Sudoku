@@ -19,6 +19,7 @@ shinyUI(fluidPage(
         
             actionButton(inputId = "Game",label = "New game")
         )),
+        
         column(width = 7,
                
             plotOutput("Sudoku"))
