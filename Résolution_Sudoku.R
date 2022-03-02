@@ -38,6 +38,7 @@ solutions_case<-function(M,i,j){
 M <- Sudoku()
 M <- Grille_incomplete(M,30)
 #les valeurs i,j sont à choisir : solutions_case(M,i,j)
+solutions_case(M,2,1)
 
 
 #Première étape de résoltion de l'algorithme de Backtracking (voir pdf projet)
@@ -75,22 +76,22 @@ parcour_Grille<-function(M){
 #ex
 parcour_Grille(index_Grille(M))
 
+
 #donne les valeurs admissibles pour une case cachée
 valeurs_case<-function(M,i,j){
   x <- bloc_ij(i,j)
   a <- x[1]
   b <- x[2]
-  c <- c()
+  d <- c()
   
   for (k in 1:9){
     if (!(is.element(k,c(M[i,],M[,j],M[(a:a+2),b],M[(a:a+2),b+1],M[(a:a+2),b+2])))){
-      c<-paste(c,k)
+      d<-c(d,k)
     }
   }
-  return(c)
+  return(d)
 }
 
 #ex
 valeurs_case(M,2,1)
-
 

@@ -1,12 +1,15 @@
 plotSudoku_2 <- function(M) {
-  
-  plot(0:10, 0:10, type="n", axes=FALSE, xlab="Column", ylab="Row")
-  for (row in 1:9) for (col in 1:9) {
-    backcol = grey(.95)
-    number = M[row, col]
-    polygon(c(col-.5, col-.5, col+.5, col+.5), 
+  par(mar=c(3,3,3,3))
+  plot(0:10, 0:10, type="n", axes=FALSE, xlab=NA, ylab=NA)
+  for (row in 1:9) {
+    for (col in 1:9) {
+      
+      backcol = grey(.95)
+      number = M[row, col]
+      polygon(c(col-.5, col-.5, col+.5, col+.5), 
             c((10-row)-.5, (10-row)+.5, (10-row)+.5, (10-row)-.5), col=backcol)
-    if (number > 0) text(col, 10-row, number, offset=0)
+      if (number > 0 & (!(is.na(number)))) text(col, 10-row, number, offset=0)
+    }
   }
   
   for (i in 1:9) {
@@ -22,4 +25,8 @@ plotSudoku_2 <- function(M) {
   }
 }
 M = diag(1:9)
-plotSudoku_2(M)  
+M = Grille_incomplete(Sudoku(),30)
+plotSudoku_2(M)
+
+
+
