@@ -41,4 +41,4 @@ Difficulté <- function(D){
     return(G)
   }
 }
-
+Difficulté("Low")

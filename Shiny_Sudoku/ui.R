@@ -8,23 +8,33 @@ shinyUI(fluidPage(
     
     fluidRow(
         
-        column(width = 5,
-               
-            titlePanel("Sudoku_Game by Quentin Fontana and Nicolas Pralon "),
-            
-            wellPanel(pickerInput(
+        titlePanel("Sudoku_Game by Quentin Fontana and Nicolas Pralon "),
+        column(width = 4,
+            wellPanel(
+                pickerInput(
                 inputId = "Difficulty",
                 label = "Difficulty :", 
                 choices = c("Low", "Medium", "High", "Expert"),
                 options = list(
                     style = "btn-primary")
-            ),
+                ),
+                actionButton(inputId = "Game",label = "New game"),
+                h4('Solve Manually:'),
+                p('Use the row/column dropdowns to input your guesses:'),
+                selectInput("row", label = "Row", 
+                            choices = list(1,2,3,4,5,6,7,8,9," "=0), 
+                            selected = 0),
+                selectInput("col", label = "Column", 
+                            choices = list(1,2,3,4,5,6,7,8,9," "=0), 
+                            selected = 0),     
+                selectInput("value", label = "Value", 
+                            choices = list(1,2,3,4,5,6,7,8,9," "=0), 
+                            selected = 0),
+                actionButton("setButton", "Set"),
+                hr(),
+            )
+        ),
         
-            actionButton(inputId = "Game",label = "New game")
-        )),
-        
-        column(width = 7,
-               
-            plotOutput("Sudoku"))
-    )
+        column(width = 8,plotOutput("Sudoku"))
+    ),
 ))
