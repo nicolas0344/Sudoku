@@ -3,18 +3,46 @@ library(shiny)
 shinyServer(function(input, output) {
     
     x <- reactiveValues(M = matrix(0,9,9))
+    y <- plot(0:10, 0:10, type="n", axes=FALSE, xlab=NA, ylab=NA)
+    z <- reactiveValues(M = matrix(0,9,9))
+    t <- reactiveValues(M = matrix(0,9,9))
     
-    observeEvent(input$setButton, {
-        x$M[as.integer(input$row),as.integer(input$col)] <- as.integer(input$value)
-    })
+    i <- reactiveValues(I = 1)
+    j <- reactiveValues(J = 1)
+    
+    p <- reactiveValues(P = 0)
+    
+    
+    
     observeEvent(input$Game, {x$M = Difficulté(input$Difficulty)})
-
+    observeEvent(input$Game, {z$M = x$M})
+    
+    observeEvent(input$id, {i$I = indice(10-(input$id$y))})
+    observeEvent(input$id, {j$J = indice(input$id$x)})
     
     
-    New_Game <- eventReactive(
-        input$Game,{Difficulté(input$Difficulty)
+    observeEvent(input$a, {p$P = 1})
+    observeEvent(input$b, {p$P = 2})
+    observeEvent(input$c, {p$P = 3})
+    
+    observeEvent(input$d, {p$P = 4})
+    observeEvent(input$e, {p$P = 5})
+    observeEvent(input$f, {p$P = 6})
+    
+    observeEvent(input$g, {p$P = 7})
+    observeEvent(input$h, {p$P = 8})
+    observeEvent(input$i, {p$P = 9})
+    
+    
+    observeEvent(input$setButton, {t$M = x$M})
+    observeEvent(input$setButton, {
+        x$M[i$I,j$J] <- p$P
     })
+    
+    observeEvent(input$restart, {x$M =z$M})
+    observeEvent(input$prec, {x$M = t$M})
 
+    output$espace <- renderPlot(y)
     output$Sudoku <- renderPlot({
             plotSudoku_2(x$M)
     })

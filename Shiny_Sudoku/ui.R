@@ -8,7 +8,7 @@ shinyUI(fluidPage(
     
     fluidRow(
         
-        titlePanel("Sudoku_Game by Quentin Fontana and Nicolas Pralon "),
+        titlePanel(" Sudoku_Game by Quentin Fontana and Nicolas Pralon "),
         column(width = 4,
             wellPanel(
                 pickerInput(
@@ -21,20 +21,33 @@ shinyUI(fluidPage(
                 actionButton(inputId = "Game",label = "New game"),
                 h4('Solve Manually:'),
                 p('Use the row/column dropdowns to input your guesses:'),
-                selectInput("row", label = "Row", 
-                            choices = list(1,2,3,4,5,6,7,8,9," "=0), 
-                            selected = 0),
-                selectInput("col", label = "Column", 
-                            choices = list(1,2,3,4,5,6,7,8,9," "=0), 
-                            selected = 0),     
-                selectInput("value", label = "Value", 
-                            choices = list(1,2,3,4,5,6,7,8,9," "=0), 
-                            selected = 0),
+                fluidRow(
+                    column(width = 5,
+                           actionButton(inputId = "a",label = "1"),
+                           actionButton(inputId = "b",label = "2"),
+                           actionButton(inputId = "c",label = "3"))
+                ),
+                fluidRow(
+                    column(width = 5, 
+                           actionButton(inputId = "d",label = "4"),
+                           actionButton(inputId = "e",label = "5"),
+                           actionButton(inputId = "f",label = "6"))
+                ),
+                fluidRow(
+                    column(width = 5, 
+                           actionButton(inputId = "g",label = "7"),
+                           actionButton(inputId = "h",label = "8"),
+                           actionButton(inputId = "i",label = "9"))
+                ),
+                h6(""),
                 actionButton("setButton", "Set"),
+                actionButton("restart","Restart"),
+                actionButton("prec","Prec"),
+                actionButton("solve","Solution"),
                 hr(),
             )
         ),
-        
-        column(width = 8,plotOutput("Sudoku"))
+        column(width = 1,plotOutput("espace")),
+        column(width = 5,plotOutput("Sudoku",click = "id")),
     ),
 ))

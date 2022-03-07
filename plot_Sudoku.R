@@ -8,7 +8,9 @@ plotSudoku_2 <- function(M) {
       number = M[row, col]
       polygon(c(col-.5, col-.5, col+.5, col+.5), 
             c((10-row)-.5, (10-row)+.5, (10-row)+.5, (10-row)-.5), col=backcol)
-      if (number > 0 & (!(is.na(number)))) text(col, 10-row, number, offset=0)
+      if (number > 0 & (!(is.na(number)))) {
+        text(col, 10-row, number, offset=0)
+      }
     }
   }
   
