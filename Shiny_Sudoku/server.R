@@ -38,14 +38,16 @@ shinyServer(function(input, output) {
     observeEvent(input$setButton, {
         a <- i$I
         b <- j$J
-        if (is.na(z$M[a,b])){
-            x$M[a,b] <- p$P
+        if (a != 0 & a != 10 & b != 0 & b != 10){
+            if (is.na(z$M[a,b])){
+                x$M[a,b] <- p$P
+            }
         }
     })
     
     observeEvent(input$restart, {x$M =z$M})
     observeEvent(input$prec, {x$M = t$M})
-
+    
     output$espace <- renderPlot(y)
     output$Sudoku <- renderPlot({
             plotSudoku_2(x$M)
