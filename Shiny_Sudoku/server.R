@@ -36,7 +36,11 @@ shinyServer(function(input, output) {
     
     observeEvent(input$setButton, {t$M = x$M})
     observeEvent(input$setButton, {
-        x$M[i$I,j$J] <- p$P
+        a <- i$I
+        b <- j$J
+        if (is.na(z$M[a,b])){
+            x$M[a,b] <- p$P
+        }
     })
     
     observeEvent(input$restart, {x$M =z$M})
