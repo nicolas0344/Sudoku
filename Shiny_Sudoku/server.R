@@ -14,7 +14,7 @@ shinyServer(function(input, output) {
     
     
     
-    observeEvent(input$Game, {x$M = Difficulté(input$Difficulty)})
+    observeEvent(input$Game, {x$M = Difficulte(input$Difficulty)})
     observeEvent(input$Game, {z$M = x$M})
     
     observeEvent(input$id, {i$I = indice(10-(input$id$y))})

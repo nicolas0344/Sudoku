@@ -48,6 +48,6 @@ shinyUI(fluidPage(
             )
         ),
         column(width = 1,plotOutput("espace")),
-        column(width = 5,plotOutput("Sudoku",click = "id")),
+        column(width = 5,plotOutput("Sudoku",click = "id"))
     ),
 ))
