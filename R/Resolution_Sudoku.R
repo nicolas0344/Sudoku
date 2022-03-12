@@ -33,7 +33,7 @@ solutions_case<-function(M,i,j){
   a <- x[1]
   b <- x[2]
   
-  c <- c(M[i,],M[,j],M[(a:a+2),b],M[(a:a+2),b+1],M[(a:a+2),b+2])
+  c <- c(M[i,],M[,j],M[a:(a+2),b],M[a:(a+2),b+1],M[a:(a+2),b+2])
   c <- c[!(is.na(c))]
   c <- factor(c)
   return(9-nlevels(c))
@@ -91,7 +91,7 @@ valeurs_case<-function(M,i,j){
   d <- c()
   
   for (k in 1:9){
-    if (!(is.element(k,c(M[i,],M[,j],M[(a:a+2),b],M[(a:a+2),b+1],M[(a:a+2),b+2])))){
+    if (!(is.element(k,c(M[i,],M[,j],M[a:(a+2),b],M[a:(a+2),b+1],M[a:(a+2),b+2])))){
       d<-c(d,k)
     }
   }
