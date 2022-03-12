@@ -1,9 +1,10 @@
 #' Affichage d'une grille de Sudoku
 #' @param M une matrice de Sudoku
+#' @param Z une matrice de Sudoku initiale (voir Shiny)
 #' @return plot la grille du Sudoku
 #' @export
-#' @examples plotSudoku_2(diag(1:9))
-plotSudoku_2 <- function(M) {
+#' @examples plotSudoku_2(diag(1:9),matrix(c(0,1,1,rep(0,78)),9,9)+diag(1:9))
+plotSudoku_2 <- function(M,Z) {
   par(mar=c(3,3,3,3))
   plot(0:10, 0:10, type="n", axes=FALSE, xlab=NA, ylab=NA)
   for (row in 1:9) {
@@ -14,6 +15,9 @@ plotSudoku_2 <- function(M) {
       polygon(c(col-.5, col-.5, col+.5, col+.5), 
             c((10-row)-.5, (10-row)+.5, (10-row)+.5, (10-row)-.5), col=backcol)
       if (number > 0 & (!(is.na(number)))) {
+        text(col, 10-row, number, offset=0, col = "grey")
+      }
+      if (is.na(Z[row,col])){
         text(col, 10-row, number, offset=0)
       }
     }
@@ -31,6 +35,4 @@ plotSudoku_2 <- function(M) {
     lines(c(i, i), c(.5, 9.5), lwd=3)
   }
 }
-
-
 
