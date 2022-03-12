@@ -97,4 +97,3 @@ valeurs_case<-function(M,i,j){
   }
   return(d)
 }
-
