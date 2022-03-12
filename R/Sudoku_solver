@@ -1,0 +1,397 @@
+library(combinat)
+
+################################################################################
+#génération aléatoire de la première ligne
+L1<-sample(1:9)
+################################################################################
+
+################################################################################
+#fonction de permutation par bloc de 3
+perm3<-function(c){
+  n<-length(c)
+  a<-rep(0,n)
+  a[1:3]<-c[(n-2):n]
+  for (i in 4:n){
+    a[i]<-c[i-3]
+    if (i == n)
+      return(a)
+  }
+}
+################################################################################
+
+################################################################################
+Sudoku<-function(){
+  M<-matrix(0,nrow=9,ncol=9)
+  L1<-sample(1:9)
+  M[1,]<-L1
+  M[2,]<-perm3(L1)
+  M[3,]<-perm3(M[2,])
+  
+  for (j in seq(1,7,by=3)){
+    for (i in seq(4,7,by=3)){
+      a<-c(M[(i-3):(i-1),j],M[(i-3):(i-1),j+1],M[(i-3):(i-1),j+2])
+      L_c<-perm3(a)
+      M[i:(i+2),j]<-L_c[1:3]
+      M[i:(i+2),j+1]<-L_c[4:6]
+      M[i:(i+2),j+2]<-L_c[7:9]
+    }
+  }
+  return(M)
+}
+################################################################################
+
+################################################################################
+#Donne un Sudoku avec n valeurs cachées aléatoirement
+Grille_incomplete<-function(M,n){
+  m<-length(M)
+  if (n>m){
+    return(c("n doit être inférieur à",m))
+  }
+  a <- 0 
+  while (a < n){
+    n_1 <- sample(1:9)[1]
+    n_2 <- sample(1:9)[1]
+    
+    if (!(is.na(M[n_1,n_2]))){
+      M[n_1,n_2]<-NA
+      a <- a+1
+    }
+  }
+  return(M)
+}
+################################################################################
+
+################################################################################
+#donne les coordonnées i_1,j_1 du premier élément du bloc (9 éléments) auquel appartient M[i,j]
+bloc_ij<-function(i,j){
+  x<-c(0,0)
+  for (k in seq(1,7,by=3)){
+    if (is.element(i,(k:(k+3)))){
+      x[1]<-k
+    }
+    if (is.element(j,(k:(k+3)))){
+      x[2]<-k
+    }
+  }
+  return(x)
+}
+################################################################################
+
+################################################################################
+#donne le nombre de valeurs possibles dans un case cachée du Sudoku
+solutions_case<-function(M,i,j){
+  if (!(is.na(M[i,j]))){
+    return(0)
+  }
+  
+  x <- bloc_ij(i,j)
+  a <- x[1]
+  b <- x[2]
+  
+  c <- c(M[i,],M[,j],M[(a:a+2),b],M[(a:a+2),b+1],M[(a:a+2),b+2])
+  c <- c[!(is.na(c))]
+  c <- factor(c)
+  return(9-nlevels(c))
+}
+################################################################################
+
+################################################################################
+#Première étape de résolution de l'algorithme de Backtracking (voir pdf projet)
+index_Grille<-function(M){
+  L<-matrix(0,9,9)
+  for (i in 1:9){
+    for (j in 1:9){
+      L[i,j] <- solutions_case(M,i,j)
+    }
+  }
+  return(L)
+}
+################################################################################
+
+################################################################################
+#donne la deuxième étape du Backtraking
+parcour_Grille<-function(M){
+  b <- 1
+  L <- matrix(0,9,9)
+  
+  for (a in 1:9){
+    for (i in 1:9){
+      for (j in 1:9){
+        if (M[i,j]==a){
+          L[i,j]<-b
+          b<-b+1
+        }
+      }
+    }
+  }
+  return(L)
+}
+################################################################################
+
+################################################################################
+#donne les valeurs admissibles pour une case cachée
+valeurs_case<-function(M,i,j){
+  x <- bloc_ij(i,j)
+  a <- x[1]
+  b <- x[2]
+  d <- NULL
+  
+  for (k in 1:9){
+    if (!(is.element(k,c(M[i,],M[,j],M[(a:a+2),b],M[(a:a+2),b+1],M[(a:a+2),b+2])))){
+      d<-c(d,k)
+    }
+  }
+  return(d)
+}
+################################################################################
+
+################################################################################
+solutions_case1<-function(M,i,j){
+  if (!(is.na(M[i,j]))){
+    return(NULL)
+  }
+  
+  x <- bloc_ij(i,j)
+  a <- x[1]
+  b <- x[2]
+  
+  c <- c(M[i,],M[,j],M[(a:a+2),b],M[(a:a+2),b+1],M[(a:a+2),b+2])
+  c <- c[!(is.na(c))]
+  c <- factor(c)
+  c <- levels(c)
+  
+  A <- setdiff(array(1:9),array(strtoi(c)))
+  return(A)
+}
+################################################################################
+
+################################################################################
+#fonction qui prend en argument le sudoku incomplet et qui rempli les cases ou il n y a qu une valeur possible
+resolution1 <- function(M){
+  x<-which(index_Grille(M)==1,arr.ind = TRUE)
+  for (i in 1:nrow(x)){
+    x1<-x[i,1]
+    x2<-x[i,2]
+    M[x1,x2]<-solutions_case1(M,x1,x2)
+  }
+  return(M)
+}
+################################################################################
+
+################################################################################
+resolution2 <- function(M,q,b){
+  
+  x<-which(parcour_Grille(index_Grille(M))==b,arr.ind = TRUE)
+  
+  if(is.element(NA,solutions_case1(M,x[1],x[2]))==TRUE & q > length(solutions_case1(M,x[1],x[2]))){
+    k<-2
+    l<-b-2
+    M<-resolution2(M,k,l)
+  }
+  
+  if(is.element(NA,solutions_case1(M,x[1],x[2]))==TRUE & q <= length(solutions_case1(M,x[1],x[2]))){
+    k<-q+1
+    l<-b-1
+    M<-resolution2(M,k,l)
+  }
+  
+  if(is.element(NA,solutions_case1(M,x[1],x[2]))==TRUE & q <= length(solutions_case1(M,x[1],x[2]))){
+    M[x[1],x[2]]<-solutions_case1(M,x[1],x[2])[q]
+  }
+  return(M)
+}
+################################################################################
+
+################################################################################
+algo_reso<-function(M){
+  
+  A <- M
+ 
+  while (identical(A,S)!=TRUE){
+    
+    B <- index_Grille(A)
+    C <- parcour_Grille(index_Grille(A))
+    
+    y <- which(C==1,arr.ind = TRUE)
+    
+    while(B[y[1],y[2]]==1){
+      A <- resolution1(A)
+      B <- index_Grille(A)
+      C <- parcour_Grille(index_Grille(A))
+      y <- which(C==1,arr.ind = TRUE)
+      print(A)
+      if(identical(B,matrix(0,9,9))==TRUE){break}
+    }
+    if(identical(B,matrix(0,9,9))==TRUE){
+      break
+      }else{
+    
+        n <- sum(apply(A,1,function(x) sum(is.na(x))))
+        
+        for(i in 1:n){
+          q<-1
+          A<-resolution2(A,q,i)
+          print(A)
+        }
+      }
+  }
+  return(A)
+}
+################################################################################
+################################################################################
+sudoku_solver<-function(M,etape,impossibilites){
+  A<-M
+  if(all(!is.na(A))){
+    return(A)
+  }else{
+    
+    i<-etape
+    x <- which(parcour_Grille(M)==i,arr.ind = TRUE)
+    
+    possibilites[i,] <- solutions_case1(A,x[1],x[2])
+    exclure <- which(possibilites[i,]==impossibilites[i,])
+    possibilites[i,] <- possibilites[i,-exclure]
+      
+    A[x[1],x[2]] <- possibilites[i,1]
+    
+    u <- which(parcour_Grille(M)==i+1,arr.ind = TRUE)
+    v <- solutions_case1(A,x[1],x[2])
+    
+    if(is.null(v)){
+      impossibilites[i,]<-possibilites[i,1]
+      sudoku_solver(A,i-1,impossibilites)
+    }else{
+      sudoku_solver(A,i+1,impossibilites)
+    }
+  }
+}
+
+################################################################################
+################################################################################
+solve_sudoku<-function(M){
+  
+  if(all(!is.na(M))){
+    return(M)
+  }
+  
+  y <- which(is.na(M),arr.ind = TRUE)
+  
+  row <- y[1,1]
+  col <- y[1,2]
+  
+  p <- solutions_case1(M,row,col)
+  
+  for (i in p){
+    
+    M[row,col]<-i
+    sol <- solve_sudoku(M)
+    
+    if(is.null(sol)){
+      return(sol)
+    }
+  }
+  
+  return(NULL)
+  
+}
+
+################################################################################
+
+################################################################################
+S<-Sudoku()
+M<-Grille_incomplete(S,40)
+M
+solve_sudoku(M)
+
+algo_reso(M)
+index_Grille(algo_reso(M))
+################################################################################
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+################################################################################
+absentSurLigne <- function(k, M, i){
+  for (j in 1:9){
+    if (M[i][j] == k){
+      return (FALSE)
+      }
+  return(TRUE)
+  }
+}
+
+absentSurColonne <- function(k, M, j){
+  for (i in 1:9){
+    if (M[i][j] == k){
+      return (FALSE)
+    }
+    return(TRUE)
+  }
+}
+
+absentSurBloc <- function(k, M, i, j){
+  ii <- i-(i%%3) 
+  jj <- j-(j%%3) 
+  for (i in ii:ii+3){
+    for (j in jj:jj+3){
+      if (M[i][j] == k){
+        return(FALSE)
+      }
+    }
+  return(TRUE)
+  }
+}
+
+estValide <- function(M, position){
+
+  if (position == NULL){
+    return(TRUE)
+  }
+  
+  i <- as.integer(position/9)
+  j <- as.integer(position%%9)
+  
+  for (k in 1:9){
+    
+    if (absentSurLigne(k,M,i) & absentSurColonne(k,M,j) & absentSurBloc(k,M,i,j)){
+      
+      M[i][j] = k
+      
+      if(estValide(M, position+1)){
+        
+        return(TRUE)
+      }
+    }
+  }
+  
+  M[i][j] = 0
+  
+  return(FALSE)
+}
+
+A <- Sudoku()
+A
+M <- Grille_incomplete(A,20)
+M
+X <- estValide(M,11)
+X
+
