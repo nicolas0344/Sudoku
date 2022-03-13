@@ -4,10 +4,12 @@
 \alias{plotSudoku_2}
 \title{Affichage d'une grille de Sudoku}
 \usage{
-plotSudoku_2(M)
+plotSudoku_2(M, Z)
 }
 \arguments{
 \item{M}{une matrice de Sudoku}
+
+\item{Z}{une matrice de Sudoku initiale (voir Shiny)}
 }
 \value{
 plot la grille du Sudoku
@@ -16,5 +18,5 @@ plot la grille du Sudoku
 Affichage d'une grille de Sudoku
 }
 \examples{
-plotSudoku_2(diag(1:9))
+plotSudoku_2(diag(1:9),matrix(c(0,1,1,rep(0,78)),9,9)+diag(1:9))
 }

@@ -14,7 +14,7 @@ shinyServer(function(input, output) {
     
     
     
-    observeEvent(input$Game, {x$M = Difficulte(input$Difficulty)})
+    observeEvent(input$Game, {x$M = Difficulte2(input$Difficulty)})
     observeEvent(input$Game, {z$M = x$M})
     
     observeEvent(input$id, {i$I = indice(10-(input$id$y))})
@@ -48,9 +48,11 @@ shinyServer(function(input, output) {
     observeEvent(input$restart, {x$M =z$M})
     observeEvent(input$prec, {x$M = t$M})
     
+    observeEvent(input$solve, {x$M = solve_sudoku1(x$M)})
+    
     output$espace <- renderPlot(y)
     output$Sudoku <- renderPlot({
-            plotSudoku_2(x$M)
+        plotSudoku_2(x$M,z$M)
     })
     
 })

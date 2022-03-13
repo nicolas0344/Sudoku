@@ -2,47 +2,55 @@
 #' @param D un string = c(Low, Medium, High, Expert)
 #' @return retourne une matrice grille de Sudoku par difficulte
 #' @export
-#' @examples Difficulte("Low")
-Difficulte <- function(D){
+#' @examples Difficulte2("Low")
+Difficulte2<- function(D){
   M <- Sudoku()
-  n <- sample(5:80)[1]
-  G <- Grille_incomplete(M,n)
-  B <- 0 
-  "B = BackTracking(G)"
-  if (D == "Low"){
-    while (!(is.element(B,10:20))){
-      n <- sample(5:80)[1]
+  if (D == "Low" ){
+    n <- 40
+    G <- Grille_incomplete(M,n)
+    B <- Backtraking(G)
+    while (B>51){
+      M <- Sudoku()
       G <- Grille_incomplete(M,n)
-      B <- B +1 
-      "BackTracking(G)"
+      B <- Backtraking(G)
     }
     return(G)
   }
-  if (D == "Medium"){
-    while (!(is.element(B,20:30))){
-      n <- sample(5:80)[1]
+  if (D == "Medium" ){
+    n <- 47
+    G <- Grille_incomplete(M,n)
+    B <- Backtraking(G)
+    while (!(is.element(B,47:58))){
+      M <- Sudoku()
       G <- Grille_incomplete(M,n)
-      B <- B +1 
-      "BackTracking(G)"
+      B <- Backtraking(G)
     }
     return(G)
   }
-  if (D == "High"){
-    while (!(is.element(B,30:40))){
-      n <- sample(5:80)[1]
+  if (D == "High" ){
+    n <- 55
+    G <- Grille_incomplete(M,n)
+    B <- Backtraking(G)
+    while (!(is.element(B,55:66))){
+      M <- Sudoku()
       G <- Grille_incomplete(M,n)
-      B <- B +1 
-      "BackTracking(G)"
+      B <- Backtraking(G)
     }
     return(G)
   }
-  if (D == "Expert"){
-    while (!(is.element(B,40:50))){
-      n <- sample(5:80)[1]
+  if (D == "Expert" ){
+    n <- 62
+    G <- Grille_incomplete(M,n)
+    B <- Backtraking(G)
+    "BackTracking(G)"
+    while (B<62){
+      M <- Sudoku()
       G <- Grille_incomplete(M,n)
-      B <- B +1 
-      "BackTracking(G)"
+      B <- Backtraking(G)
     }
     return(G)
+  }
+  else {
+    return(Grille_incomplete(M,45))
   }
 }
